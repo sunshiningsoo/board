@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React, { useState} from "react";
 
 
 const WriteSome = () => {
     const [editing, setEditing] = useState(false);
     const [textWrite, setTextWrite] = useState("");
     const [sendSome, setSendSome] = useState(false);
+    const [id, setId] = useState(0);
 
     const OpenWhiteBoard = () => {
         (editing ? setEditing(false) : setEditing(true));
@@ -13,7 +14,12 @@ const WriteSome = () => {
     const saveWriting = (event) => {
         event.preventDefault();
         setSendSome(true);
+        localStorage.setItem(JSON.stringify(setId(id+1)), JSON.stringify(event.target.value));
+        updateSome();
+    }
 
+    const updateSome = () => {
+        
     }
     
     const onChange = async (event) => {
@@ -22,16 +28,13 @@ const WriteSome = () => {
     }
 
     const delWriting = (event) => {
-        event.target.value
-    }
-
-    useEffect (() => {
+        setEditing(false);
         setSendSome(false);
-    }, []);
+    }
 
     return(
         <div>
-            <input type="button" value="글작성" onClick={OpenWhiteBoard}/>
+            <input type="button" value={editing ? "홈으로": "글작성"} onClick={OpenWhiteBoard}/>
             <>
             <form>
                 <div>
@@ -42,14 +45,13 @@ const WriteSome = () => {
                             <button type="submit" onClick={delWriting}>글 삭제</button>
                         </>):(
                         <>
-                            <h1>write some</h1>
                             <h1>글 작성해주세요</h1>
                         </>)
                     }
                 </div>
             </form>
             <div>
-                {sendSome ? <h4>{textWrite}</h4> : <h4>not save yet</h4>}
+                {sendSome ? <h4>{textWrite}</h4> : <h4>nothing saved yet</h4>}
             </div>
             </>
         </div>
